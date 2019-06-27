@@ -18,13 +18,29 @@ $("#design option:first-child").hide();
 
 $("#color").prepend('<option selected>Please select a T-shirt theme</option>');
 
+// Hide the colors in the "color" drop down menu
 $('#color option').hide();
+
 
 $("#design").on("change", function(){
     let design = $(this).val();
+    // let jspuns = 
+    if (design === "js puns"){
+        $("#color option:contains('JS Puns')").show();
+        $("#color option:contains('I')").hide();
 
-    if (design = "Theme - JS Puns"){}
+    } else {
+        $("#color option:contains('I')").show();
+        $("#color option:contains('JS Puns')").hide();
+    }
+});
 
-}
+// activity section
 
-)
+$(".activities label").on("change", function(e){
+    let clickedInput = $('.activities input:checked').text();
+    // let clickedInput = $('this').text();
+    // let textContentOfAbove = 'clickedInput.prev';
+
+alert(clickedInput);
+});
