@@ -2,7 +2,7 @@
 $('#name').focus();
 $("#other-title").hide();
 
-// if other is selected from job role, then show the text input.
+// If "other" is selected from job role, then show the text input.
 
 $('#title').on('change', function(){
     let option = $('#title').val();
@@ -11,17 +11,16 @@ $('#title').on('change', function(){
     }else{$("#other-title").hide();}
 });
 
-// hide the select theme option in design menu
+// Hiding the select theme option in design menu
 $("#design option:first-child").hide();
 
-// update the color field to read "please select a T-shirt theme"
-
+// Updating the color field to read "please select a T-shirt theme"
 $("#color").prepend('<option selected>Please select a T-shirt theme</option>');
 
-// Hide the colors in the "color" drop down menu
+// Hiding the colors in the "color" drop down menu
 $('#color option').hide();
 
-
+// 
 $("#design").on("change", function(){
     let design = $(this).val();
     if (design === "js puns"){
@@ -36,6 +35,7 @@ $("#design").on("change", function(){
 
 // activity section
 
+//let testNumber = parseInt($(".activities input:checked").text());
     $('.activities :checkbox').click(function(){
        let totalActivityCost = 0;
        const $jsFrameWorks = $('input[name="js-frameworks"]');
@@ -49,7 +49,7 @@ $("#design").on("change", function(){
             switch(element.name){
                 case "all": totalActivityCost +=200;
                 break;
-                case "js-frameworks": totalActivityCost +=100; $express.prop("disabled", true);
+                case "js-frameworks": totalActivityCost +=100;
                 break;
                 case "js-libs": totalActivityCost +=100;
                 break;
@@ -65,8 +65,51 @@ $("#design").on("change", function(){
             
         });
 
+        $(".activities").append('<p id="total-cost"></p>');
+        $('#total-cost').html('Total Cost: $'+totalActivityCost);
 
-      
+        // Disabling conflicting
+      $jsFrameWorks.change(function() {
+        if ($(this).val(":checked")){
+            $express.prop("disabled", true);
+            $express.parent().css({color: "grey"});
+        } else{
+            $express.prop("disabled", false);
+            $express.parent().css({color: "black"});
+        }
+        });
+      $express.change(function() {
+        if ($(this).val(":checked")){
+            $jsFrameWorks.prop("disabled", true);
+            $jsFrameWorks.parent().css({color: "grey"});
+        } else{
+            $jsFrameWorks.prop("disabled", false);
+            $jsFrameWorks.parent().css({color: "black"});
+
+        }
+      });
+      $jslibs.change(function() {
+        if ($(this).val(":checked")){
+            $node.prop("disabled", true);
+            $node.parent().css({color: "grey"});
+        } else{
+            $node.prop("disabled", false);
+            $node.parent().css({color: "black"});
+
+        }
+      });
+      $node.change(function() {
+        if ($(this).val(":checked")){
+            $jslibs.prop("disabled", true);
+            $jslibs.parent().css({color: "grey"});
+        } else{
+            $jslibs.prop("disabled", false);
+            $jslibs.parent().css({color: "black"});
+        }
+      });
+   });
+
+
    // payment section
 
 
@@ -120,8 +163,8 @@ function checkName(){
         console.log("name should turn red");
         $('input[name="user_name"]').css("border-color", "#FF0000");
         $('#name').prev().css("color", "#FF0000");
-        nameError = true;
-    } else {nameError = false;
+        //nameError = true;
+    } else {//nameError = false;
         $('input[name="user_name"]').css("border-color", "#b0d3e2");
         $('#name').prev().css("color", "#184f68");
     }
@@ -135,11 +178,11 @@ function checkEmail(){
         console.log("email should turn red");
         $('input[name="user_email"]').css("border-color", "#FF0000");
         $('#mail').prev().css("color", "#FF0000");
-        emailError = true;
+       // emailError = true;
     } else {
         $('input[name="user_email"]').css("border-color", "#b0d3e2");
         $('#mail').prev().css("color", "#184f68");
-        emailError = false;
+       // emailError = false;
     }
 }  
 
@@ -151,10 +194,10 @@ function checkActivities(){
 
     if (activityNumber.length < 1){
         $('.activities legend').css("color", "red");
-        activityError = true;
+       // activityError = true;
     } else {
         $('.activities legend').css("color", "#184f68");
-        activityError = false;
+       // activityError = false;
     }
 }
 
@@ -164,7 +207,9 @@ function zip (){
 
     if (!zipReg.test(zipVal) || zipVal == ""){
         $('#zip').css('border-color', "red");
-        cardError = true;
+        $('#zip').prev().css('color', "red");
+
+        //cardError = true;
 } else {
     $('#zip').css('border-color', "black");
 
@@ -178,6 +223,8 @@ function cvv (){
     if (!cvvReg.test(cvvVal) || cvvVal == ""){
         console.log("cvv turns red");
         $('#cvv').css('border-color', "red");
+        $('#cvv').prev().css('color', "red");
+
         cardError = true;
     } else{
         $('#cvv').css('border-color', "black");
@@ -191,9 +238,13 @@ function cardNumber (){
     if (!cardNumberReg.test(cardNumberVal)){
         console.log("cardNumber turns red");
         $('#cc-num').css('border-color', "red");
-        cardError = true;
+        $('#cc-num').prev().css('color', "red");
+
+        //cardError = true;
     } else{
         $('#cc-num').css('border-color', "black");
+        $('#cc-num').prev().css('color', "black");
+
     }
 }
 
