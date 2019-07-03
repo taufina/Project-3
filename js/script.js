@@ -1,3 +1,8 @@
+/////// TECHDEGREE PROJECT 3 //////
+/////// NABILA TAUFIQ //////
+
+
+
 const emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
 
 // Placing focus on "name".
