@@ -335,40 +335,6 @@ $("#mail").on("focusout", function(){
     }
 });
 
-//
-
-// const creditCard = () => {
-//     let cardNumber = $("#cc-num").val();
-//     let cardZip = $("#zip").val();
-//     let cardCvv = $("#cvv");
-
-//     if (cardNumber.length < 13 || cardNumber.length > 16){
-//         paymentStatus = true;
-//         $('cc-num').css("color", "red");
-//     } else{
-//         paymentStatus = false;
-//         $('cc-num').css("color", "#184f68");
-//     }
-
-//     if (cardZip.length !== 5){
-//         paymentStatus = true;
-//         $('#zip').css("color", "red");
-//     } else{
-//         paymentStatus = false;
-//         $('#zip').css("color", "#184f68");
-//     }
-
-//     if (cardCvv.length === 3){
-//         paymentStatus = false;
-//         $('cvv').css("color", "red");
-//     } else{
-//         paymentStatus = true;
-//         $('cvv').css("color", "#184f68");
-
-//     }
-// }
-
-
 // No action will be taken until DOM is ready.
 $(document).ready(function(){
     $('button:submit').click(function(){
