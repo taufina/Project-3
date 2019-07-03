@@ -158,6 +158,7 @@ $("#design").on("change", function(){
 function checkName(){
     const nameReg = /^[A-Za-z]+$/;
     const name = $('#name').val();
+    //nameError = false;
 
     if (!nameReg.test(name) || name == ""){
         console.log("name should turn red");
@@ -173,12 +174,13 @@ function checkName(){
 function checkEmail(){
     const emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
     const email = $('#mail').val();
-    
+    //emailError = false;
+
     if (!emailReg.test(email) || email == ""){
         console.log("email should turn red");
         $('input[name="user_email"]').css("border-color", "#FF0000");
         $('#mail').prev().css("color", "#FF0000");
-       // emailError = true;
+        //emailError = true;
     } else {
         $('input[name="user_email"]').css("border-color", "#b0d3e2");
         $('#mail').prev().css("color", "#184f68");
@@ -192,9 +194,10 @@ function checkActivities(){
         activityNumber.push($(this).text());
     });
 
+    //activityError = false;
     if (activityNumber.length < 1){
         $('.activities legend').css("color", "red");
-       // activityError = true;
+        //activityError = true;
     } else {
         $('.activities legend').css("color", "#184f68");
        // activityError = false;
@@ -212,6 +215,7 @@ function zip (){
         //cardError = true;
 } else {
     $('#zip').css('border-color', "black");
+    $('#zip').prev().css('color', "black");
 
 }
 }
@@ -225,15 +229,17 @@ function cvv (){
         $('#cvv').css('border-color', "red");
         $('#cvv').prev().css('color', "red");
 
-        cardError = true;
+        //cardError = true;
     } else{
         $('#cvv').css('border-color', "black");
+        $('#cvv').prev().css('color', "black");
     }
 }
 
 function cardNumber (){
     let cardNumberReg = /^[0-9]{13,16}?$/;
     const cardNumberVal = $("#cc-num").val();
+    //cardError = false;
 
     if (!cardNumberReg.test(cardNumberVal)){
         console.log("cardNumber turns red");
@@ -333,30 +339,25 @@ function checkCard(){
 // }
 // });
 
-//$(document).ready(function(){
+$(document).ready(function(){
     $('button').click(function(){
+        event.preventDefault();
         console.log("Form submitted");
 
-        let nameError = false;
-        let emailError = false;
-        let activityError = false;
-        let cardError = false;
-
-
-        
         checkName();
         checkEmail();
         checkActivities();
         checkCard();
         
-        if (nameError || emailError || activityError || cardError){
-            console.log("error exist");
-            return true;
-        } 
-        else{
-            console.log("no error");
-            return false;
-        }  
+        
+        // if (nameError || emailError || activityError || cardError){
+        //     console.log("error exist");
+        //     return true;
+        // } 
+        // else{
+        //     console.log("no error");
+        //     return false;
+        // }  
     });
-//});
+});
 
