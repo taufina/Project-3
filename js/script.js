@@ -2,7 +2,10 @@
 /////// NABILA TAUFIQ //////
 
 
-
+let nameError = false;
+let emailError = false;
+let activityError = false;
+let cardError = false;
 const emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
 
 // Placing focus on "name".
@@ -90,7 +93,7 @@ $("#design").on("change", function(){
 
         // A <p> tag is added with a string stating the total cost.
 
-        $(".activities").append('<p id="total-cost"></p>');
+        $(".activities").append('<span id="total-cost"></span>');
         $('#total-cost').html('Total Cost: $'+totalActivityCost);
 
     
@@ -147,7 +150,9 @@ $("#design").on("change", function(){
    $('#payment [value="select_method"]').hide();
 
 // Messages for paypal and bitcoin are hidden.
-   $('div p').hide();
+$('div p').hide();
+$('div p').eq(0).addClass("paypal");
+$('div p').eq(1).addClass("bitcoin");
 
 // Credit card is selected by default.
    $('select option[value="credit card"]').attr("selected",true);
@@ -158,25 +163,20 @@ $("#design").on("change", function(){
    $("#payment").on("change", function(){
         payment = $(this).val();
         console.log("payment is " + payment);
+        $('div p').hide();
     
         // Show only bitcoin message when bitcoin message is selected.
        if (payment === "bitcoin"){
-            $('div p').eq(0).hide();
+           // $('.paypal').hide();
             $('.credit-card').hide();
-            $('div p').eq(1).show();
-       } 
-       
-       // Show only paypal message when paypal is selected.
-       if (payment === "paypal"){
-            $('div p').eq(1).hide();
-            $('.credit-card').hide();
-            $('div p').eq(0).show();
-       } 
-       
-       // Show the appropriate boxes when credit card is selected.
-       if (payment === "credit card"){
+            $('.bitcoin').show();
+       } else if(payment === "paypal"){
+        $('.paypal').show();
+        $('.credit-card').hide();
+        //$('.bitcoin').hide();
+    } else {
             console.log('credit card selected');
-            $('div p').hide();
+            //$('div p').hide();
             $('.credit-card').show();
        }
     });
@@ -189,11 +189,6 @@ $("#design").on("change", function(){
 function checkName(){
     const nameReg = /^[A-Za-z]+$/;
     const name = $('#name').val();
-
-    // Global variable to check whether error in name exists.  
-    // If false = no error, if true = error exists.
-
-    nameError = false;
 
     // If the name user enters does not match regular expression, the border of the textbox and the label turns red.
     // If the name matches the regex, then the border and title stays the color it was.
@@ -213,9 +208,9 @@ function checkName(){
     // If the name matches the regex, then the border and title stays the color it was.
 
 function checkEmail(){
-    const emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+    //const emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
     const email = $('#mail').val();
-    emailError = false;
+   // emailError = false;
 
     if (!emailReg.test(email) || email == ""){
         console.log("email should turn red");
@@ -238,7 +233,7 @@ function checkActivities(){
         activityNumber.push($(this).text());
     });
 
-    activityError = false;
+    //activityError = false;
     if (activityNumber.length < 1){
         $('.activities legend').css("color", "red");
         activityError = true;
@@ -292,7 +287,7 @@ function cvv (){
 function cardNumber (){
     let cardNumberReg = /^[0-9]{13,16}?$/;
     const cardNumberVal = $("#cc-num").val();
-    cardError = false;
+    //cardError = false;
 
     if (!cardNumberReg.test(cardNumberVal)){
         console.log("cardNumber turns red");
@@ -337,7 +332,11 @@ $("#mail").on("focusout", function(){
 
 // No action will be taken until DOM is ready.
 $(document).ready(function(){
-    $('button:submit').click(function(){
+    $('button:submit').click(function(event){
+        // nameError = false;
+        // emailError = false;
+        // activityError = false;
+        // cardError = false;
 
 
         // event.preventDefault stops the page from reloading until all required parts are validated. 
@@ -347,8 +346,8 @@ $(document).ready(function(){
         // all required parts are validated.  If it doesn't meet the required conditions, the boxes and labels appear red.
         checkName();
         checkEmail();
-        checkActivities();
-        checkCard();
+        checkActivities(); 
+        checkCard(); 
         
         // If error exists in one of more of the required field, an alert pops up saying the "registration was unsuccessful."  
         // Otherwise the page gives an alert that the "registration was successful", and then the page reloads.   
@@ -359,6 +358,7 @@ $(document).ready(function(){
         else{
             console.log("no error");
             alert("Registration successful! See you at the conference!")
+            location.reload(true);
         }  
     });
 });
