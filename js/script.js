@@ -2,11 +2,6 @@
 /////// NABILA TAUFIQ //////
 
 
-let nameError = false;
-let emailError = false;
-let activityError = false;
-let cardError = false;
-const emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
 
 // Placing focus on "name".
 $('#name').focus();
@@ -91,7 +86,7 @@ $("#design").on("change", function(){
             }
         });
 
-        // A <p> tag is added with a string stating the total cost.
+        // A <span> tag is added with a string stating the total cost.
 
         $(".activities").append('<span id="total-cost"></span>');
         $('#total-cost').html('Total Cost: $'+totalActivityCost);
@@ -149,7 +144,8 @@ $("#design").on("change", function(){
 // "Select payment method" is hidden.
    $('#payment [value="select_method"]').hide();
 
-// Messages for paypal and bitcoin are hidden.
+// Messages for paypal and bitcoin are hidden.  
+//Adding classes to the paypal and bitcoin messages. 
 $('div p').hide();
 $('div p').eq(0).addClass("paypal");
 $('div p').eq(1).addClass("bitcoin");
@@ -165,18 +161,14 @@ $('div p').eq(1).addClass("bitcoin");
         console.log("payment is " + payment);
         $('div p').hide();
     
-        // Show only bitcoin message when bitcoin message is selected.
+        // Show only appropriate message for the selected payment method.
        if (payment === "bitcoin"){
-           // $('.paypal').hide();
             $('.credit-card').hide();
             $('.bitcoin').show();
        } else if(payment === "paypal"){
-        $('.paypal').show();
-        $('.credit-card').hide();
-        //$('.bitcoin').hide();
-    } else {
-            console.log('credit card selected');
-            //$('div p').hide();
+            $('.paypal').show();
+            $('.credit-card').hide();
+       } else {
             $('.credit-card').show();
        }
     });
@@ -185,6 +177,7 @@ $('div p').eq(1).addClass("bitcoin");
 
 ///////////////////// VALIDATION SECTION /////////////////////
 
+const emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
 
 function checkName(){
     const nameReg = /^[A-Za-z]+$/;
@@ -197,7 +190,7 @@ function checkName(){
         console.log("name should turn red");
         $('input[name="user_name"]').css("border-color", "#FF0000");
         $('#name').prev().css("color", "#FF0000");
-        nameError = true;
+        nameValid = false;
     } else {
         $('input[name="user_name"]').css("border-color", "#b0d3e2");
         $('#name').prev().css("color", "#184f68");
@@ -208,15 +201,13 @@ function checkName(){
     // If the name matches the regex, then the border and title stays the color it was.
 
 function checkEmail(){
-    //const emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
     const email = $('#mail').val();
-   // emailError = false;
 
     if (!emailReg.test(email) || email == ""){
         console.log("email should turn red");
         $('input[name="user_email"]').css("border-color", "#FF0000");
         $('#mail').prev().css("color", "#FF0000");
-        emailError = true;
+        emailValid = false;
     } else {
         $('input[name="user_email"]').css("border-color", "#b0d3e2");
         $('#mail').prev().css("color", "#184f68");
@@ -233,10 +224,10 @@ function checkActivities(){
         activityNumber.push($(this).text());
     });
 
-    //activityError = false;
     if (activityNumber.length < 1){
+        console.log("Register for Activites turns red");
         $('.activities legend').css("color", "red");
-        activityError = true;
+        activityValid = false;
     } else {
         $('.activities legend').css("color", "#184f68");
     }
@@ -253,8 +244,8 @@ function zip (){
     if (!zipReg.test(zipVal) || zipVal == ""){
         $('#zip').css('border-color', "red");
         $('#zip').prev().css('color', "red");
-
-        cardError = true;
+        console.log("Zip Code turns red");
+        cardValid = false;
     } else {
         $('#zip').css('border-color', "#b0d3e2");
         $('#zip').prev().css('color', "#184f68");
@@ -274,7 +265,7 @@ function cvv (){
         $('#cvv').css('border-color', "red");
         $('#cvv').prev().css('color', "red");
 
-        cardError = true;
+        cardValid = false;
     } else{
         $('#cvv').css('border-color', "#b0d3e2");
         $('#cvv').prev().css('color', "#184f68");
@@ -287,14 +278,13 @@ function cvv (){
 function cardNumber (){
     let cardNumberReg = /^[0-9]{13,16}?$/;
     const cardNumberVal = $("#cc-num").val();
-    //cardError = false;
 
     if (!cardNumberReg.test(cardNumberVal)){
         console.log("cardNumber turns red");
         $('#cc-num').css('border-color', "red");
         $('#cc-num').prev().css('color', "red");
 
-        cardError = true;
+        cardValid = false;
     } else{
         $('#cc-num').css('border-color', "#b0d3e2");
         $('#cc-num').prev().css('color', "#184f68");
@@ -330,35 +320,39 @@ $("#mail").on("focusout", function(){
     }
 });
 
+
 // No action will be taken until DOM is ready.
 $(document).ready(function(){
-    $('button:submit').click(function(event){
-        // nameError = false;
-        // emailError = false;
-        // activityError = false;
-        // cardError = false;
 
+    // when "register" button is clicked, function will be called.
+    $('button:submit').click(function(event){
+
+        // The global variables below are true by default, and will turn false if error is found.
+        nameValid = true;
+        emailValid = true;
+        activityValid = true;
+        cardValid = true;
 
         // event.preventDefault stops the page from reloading until all required parts are validated. 
         event.preventDefault();
         console.log("Form submitted");
 
-        // all required parts are validated.  If it doesn't meet the required conditions, the boxes and labels appear red.
+        // Validation fuctions are called.  If it doesn't meet the required conditions, the boxes and labels appear red.
         checkName();
         checkEmail();
         checkActivities(); 
         checkCard(); 
         
-        // If error exists in one of more of the required field, an alert pops up saying the "registration was unsuccessful."  
-        // Otherwise the page gives an alert that the "registration was successful", and then the page reloads.   
-        if (nameError || emailError || activityError || cardError){
-            console.log("error exist");
-            alert("Registration unsuccessul. Please correct the inputs marked red.")
-        } 
-        else{
+        // If all the required fields are valid, the page will reload.  
+        // Otherwise the appropriate error signs will be shown.   
+        if (nameValid && emailValid && activityValid && cardValid){
             console.log("no error");
             alert("Registration successful! See you at the conference!")
             location.reload(true);
+        } 
+        else{
+            console.log("error exist");
+            alert("Registration unsuccessul. Please correct the inputs marked red.")
         }  
     });
 });
